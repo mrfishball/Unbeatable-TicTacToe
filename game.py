@@ -1,6 +1,7 @@
 import re
 import string
 import random
+import util
 
 class Game:
 
@@ -43,16 +44,16 @@ class Game:
     while not self.game_over:
       # Loop through the array to keep correct turns
       for player in self.game_order:
+          move = None
           # If play is human type, ask for input
           if player["type"] == Game.HUMAN:
-              human_move = self.get_human_spot(self.board, player)
-              self.make_a_move(human_move, player)
-              self.draw_board(self.board)
+              move = self.get_human_spot(self.board, player)
           else:
               # If play is CPU type, generate moves
-              comp_move = self.best_move(self.board, player, player)[0]
-              self.make_a_move(comp_move, player)
-              self.draw_board(self.board)
+              move = self.best_move(self.board, player, player)[0]
+
+          self.make_a_move(move, player)
+          self.draw_board(self.board)
 
           # If a player wins, update the winner status and exist the game
           if (self.ifPlayerWin(player)):
@@ -86,10 +87,10 @@ class Game:
   # Versus mode (Human vs Human)
   # Spectator mode (Comp vs Comp)
   def set_game_mode(self):
-      print("\nGame mode selection: \n")
-      print("1. Single Player Mode")
-      print("2. Versus Mode")
-      print("3. Spectator Mode (CPU vs CPU) \n")
+      print("\nSelect a game mode: \n")
+      print("1. Play against a super computer")
+      print("2. Play with a friend")
+      print("3. Spectate a game (CPU vs CPU) \n")
       gameMode = input("Your choice is (Enter the number): ")
 
       # If the user input is not an integer or not in range of
@@ -103,37 +104,14 @@ class Game:
   def set_players(self, gameMode):
 
       if (gameMode == 1):
-          player1 = input("Please enter your name: ")
-
-          # Check to see if the player enters an invalid nameself
-          # Empty name will not be allowed
-          while not player1.strip():
-              print("\nInvalid name. Please try again. \n")
-              player1 = input("Please enter your name: ")
-
-          # Setting up player objects to keep track of the progress of the game for each player
-          self.set_players_helper(player1, Game.HUMAN, "COMP", Game.CPU)
-
+          player = util.set_player_name()
+          util.set_players_object(self, player, Game.HUMAN, "COMP", Game.CPU)
       elif (gameMode == 2):
-          player1 = input("Please enter your name (Player 1): ")
-          player2 = input("Please enter your name (Player 2): ")
-          while (not player1.strip() or not player2.strip()):
-              if (not player1.strip()):
-                  print("\nInvalid name for player 1. Please try again. \n")
-                  player1 = input("Please enter your name (Player 1): ")
-              else:
-                  print("\nInvalid name for player 2. Please try again. \n")
-                  player2 = input("Please enter your name (Player 2): ")
-          self.set_players_helper(player1, Game.HUMAN, player2, Game.HUMAN)
+          player1 = util.set_player_name()
+          player2 = util.set_player_name(2)
+          util.set_players_object(self, player1, Game.HUMAN, player2, Game.HUMAN)
       else:
-          self.set_players_helper("COMP 1", Game.CPU, "COMP 2", Game.CPU)
-
-  # Set up the player object according to game mode
-  def set_players_helper(self, player1, flag1, player2, flag2):
-      self.player1["name"] = player1
-      self.player2["name"] = player2
-      self.player1["type"] = flag1
-      self.player2["type"] = flag2
+          util.set_players_object(self, "COMP 1", Game.CPU, "COMP 2", Game.CPU)
 
   # Player can use any letters as tokens
   # Numbers and special unicode characters will not be allowed
