@@ -1,5 +1,4 @@
 import re
-import string
 import random
 import util
 
@@ -39,7 +38,7 @@ class Game:
     self.set_token(gameMode)
     self.set_turn(gameMode)
     self.draw_board(self.board)
-    self.empty_board()
+    # self.empty_board()
 
     # If game is not over, keep going
     while not self.game_over:
@@ -124,16 +123,16 @@ class Game:
       p2Token = None
 
       if (gameMode == 3):
-          p1Token = util.set_cpu_token(self)
-          p2Token = util.set_cpu_token(self)
+          p1Token = util.set_cpu_token()
+          p2Token = util.set_cpu_token(p1Token)
 
       elif (gameMode == 2):
-          p1Token = util.set_player_token(self, self.player1["name"])
-          p2Token = util.set_player_token(self, self.player2["name"])
+          p1Token = util.set_player_token(self.player1["name"])
+          p2Token = util.set_player_token(self.player2["name"], p1Token)
 
       else:
-          p1Token = util.set_player_token(self, self.player1["name"])
-          p2Token = util.set_cpu_token(self)
+          p1Token = util.set_player_token(self.player1["name"])
+          p2Token = util.set_cpu_token(p1Token)
 
       self.player1["token"] = p1Token
       self.player2["token"] = p2Token
@@ -196,7 +195,7 @@ class Game:
   def isValidMove(self, board, move):
       try:
           move = int(move)
-          if board[move-1] == " ":
+          if move in board:
               return True
           else:
               print("\nThis spot is taken. Please try again.")
@@ -253,7 +252,7 @@ class Game:
 
   # Generate available spots on the board
   def available_moves(self, board):
-      return [pos for pos, spot in enumerate(board) if spot == " "]
+      return [pos for pos, spot in enumerate(board) if spot != self.player1["token"] and spot != self.player2["token"]]
 
   # Generate best moves by scanning through combinations of patterns
   # and check against whether it'll lead to opponent winning the game or
@@ -280,7 +279,7 @@ class Game:
           score = self.best_move(board, self.get_opponent(nextMove), player)[1]
           moves.append((move, score))
           # Undo the changes to reflect the current state of the board
-          board[move] = " "
+          board[move] = move + 1
 
       # if the AI player is the player making the next move, then
       # we want to get the best move, move with the highest score
