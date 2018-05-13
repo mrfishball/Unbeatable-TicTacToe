@@ -31,6 +31,9 @@ def set_cpu_token(tokenToCompare=None):
         cpuToken = cpuToken = random.choice(string.ascii_uppercase)
     return cpuToken.upper()
 
+# Check to make sure the token enter matches the below criteria:
+# Must be length of 1
+# Must be a letter from A-Z, regardless of upper or lower case
 def isTokenValid(token, tokenToCompare=None):
     if re.match("^[a-zA-Z]{1}$", token):
         # Check if player1 token has been set if not then current token will belong to player1

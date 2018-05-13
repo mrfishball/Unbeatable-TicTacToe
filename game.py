@@ -16,17 +16,6 @@ class Game:
     self.game_over = False
     self.winner = None
 
-  # Check to make sure the token enter matches the below criteria:
-  # Must be length of 1
-  # Must be a letter from A-Z, regardless of upper or lower case
-
-  # @staticmethod
-  # def isTokenValid(token):
-  #     if re.match("^[a-zA-Z]{1}$", token):
-  #         return True
-  #     else:
-  #         return False
-
   @staticmethod
   def rolldice():
       return random.randint(1, 6)
@@ -38,7 +27,6 @@ class Game:
     self.set_token(gameMode)
     self.set_turn(gameMode)
     self.draw_board(self.board)
-    # self.empty_board()
 
     # If game is not over, keep going
     while not self.game_over:
@@ -77,10 +65,6 @@ class Game:
        -----------
         {} | {} | {}
       """.format(*board))
-
-  # Empty the board before the game begins for better visual
-  def empty_board(self):
-      self.board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
 
   # Select game mode from:
   # Single player mode (Human vs Comp)
