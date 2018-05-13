@@ -42,6 +42,7 @@ class Game:
 
           self.make_a_move(move, player)
           self.draw_board(self.board)
+          print("\nPlayer {}({}) chose spot '{}'.".format(player["name"], player["token"], move+1))
 
           # If a player wins, update the winner status and exist the game
           if (self.ifPlayerWin(player)):

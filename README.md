@@ -61,11 +61,11 @@ None, pure python code.
 
 Steven, please make a move on the board (1 - 9): 2
 
-       | S |
+     1 | S | 3
     -----------
-       |   |
+     4 | 5 | 6
     -----------
-       |   |
+     7 | 8 | 9
 
 
      C | S |
