@@ -20,12 +20,13 @@ class Game:
   # Check to make sure the token enter matches the below criteria:
   # Must be length of 1
   # Must be a letter from A-Z, regardless of upper or lower case
-  @staticmethod
-  def isTokenValid(token):
-      if re.match("^[a-zA-Z]{1}$", token):
-          return True
-      else:
-          return False
+
+  # @staticmethod
+  # def isTokenValid(token):
+  #     if re.match("^[a-zA-Z]{1}$", token):
+  #         return True
+  #     else:
+  #         return False
 
   @staticmethod
   def rolldice():
@@ -105,69 +106,40 @@ class Game:
 
       if (gameMode == 1):
           player = util.set_player_name()
-          util.set_players_object(self, player, Game.HUMAN, "COMP", Game.CPU)
+          util.set_player_object(self, player, Game.HUMAN, "COMP", Game.CPU)
       elif (gameMode == 2):
           player1 = util.set_player_name()
           player2 = util.set_player_name(2)
-          util.set_players_object(self, player1, Game.HUMAN, player2, Game.HUMAN)
+          util.set_player_object(self, player1, Game.HUMAN, player2, Game.HUMAN)
       else:
-          util.set_players_object(self, "COMP 1", Game.CPU, "COMP 2", Game.CPU)
+          util.set_player_object(self, "COMP 1", Game.CPU, "COMP 2", Game.CPU)
 
   # Player can use any letters as tokens
   # Numbers and special unicode characters will not be allowed
   def set_token(self, gameMode):
 
-      print("\nToken Selection: ")
+      print("\nSelect a token: ")
       print("A token is a letter (A to Z) that will be used to mark your moves on the board. \n")
+      p1Token = None
+      p2Token = None
+
       if (gameMode == 3):
-          self.player1["token"] = "X"
-          self.player2["token"] = "O"
-          print("\nThe token for '{}' is '{}'".format(self.player1["name"], self.player1["token"]))
-          print("The token for '{}' is '{}'".format(self.player2["name"], self.player2["token"]))
+          p1Token = util.set_cpu_token(self)
+          p2Token = util.set_cpu_token(self)
 
       elif (gameMode == 2):
-          p1Token = input("Please enter the token of your choice ({}): ".format(self.player1["name"]))
-          p2Token = input("Please enter the token of your choice ({}): ".format(self.player2["name"]))
+          p1Token = util.set_player_token(self, self.player1["name"])
+          p2Token = util.set_player_token(self, self.player2["name"])
 
-          while (not Game.isTokenValid(p1Token) or not Game.isTokenValid(p2Token)
-            and not p1Token.upper() == p2Token.upper()):
-
-              if not Game.isTokenValid(p1Token):
-                  print("\nInvalid token for player '{}'. Please try again. \n".format(self.player1["name"]))
-                  p1Token = input("Please enter the token of your choice ({}): ".format(self.player1["name"]))
-              else:
-                  if (p2Token.upper() == p1Token.upper()):
-                      print("Token '{}' is taken. Please enter a different token. \n".format(p1Token.upper()))
-                      p2Token = input("Please enter the token of your choice ({}): ".format(self.player2["name"]))
-                  else:
-                      print("\nInvalid token for player '{}'. Please try again. \n".format(self.player2["name"]))
-                      p2Token = input("Please enter the token of your choice ({}): ".format(self.player2["name"]))
-
-          # Set each players' tokens to the uppercase of their choice of letters
-          self.player1["token"] = p1Token.upper()
-          self.player2["token"] = p2Token.upper()
-          print("\nThe token for '{}' is '{}'".format(self.player1["name"], self.player1["token"]))
-          print("The token for '{}' is '{}'".format(self.player2["name"], self.player2["token"]))
       else:
-          p1Token = input("Please enter the token of your choice: ")
+          p1Token = util.set_player_token(self, self.player1["name"])
+          p2Token = util.set_cpu_token(self)
 
-          while not Game.isTokenValid(p1Token):
-              print("\nInvalid token. Please try again. \n")
-              p1Token = input("Please enter the token of your choice: ")
+      self.player1["token"] = p1Token
+      self.player2["token"] = p2Token
 
-          self.player1["token"] = p1Token.upper()
-
-          # Randomly generate a token for CPU player
-          cpuToken = random.choice(string.ascii_uppercase)
-
-          # Make sure the CPU token is unique
-          while (cpuToken == self.player1["token"]):
-              cpuToken = random.choice(string.ascii_uppercase)
-
-          self.player2["token"] = cpuToken
-
-          print("\nThe token for '{}' is '{}'".format(self.player1["name"], self.player1["token"]))
-          print("The token for '{}' is '{}'".format(self.player2["name"], self.player2["token"]))
+      print("\nThe token for '{}' is '{}'".format(self.player1["name"], self.player1["token"]))
+      print("The token for '{}' is '{}'".format(self.player2["name"], self.player2["token"]))
 
   # Pick which player goes first
   # Only if versus mode is selected then players will roll dice to determine who gets to
