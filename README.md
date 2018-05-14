@@ -4,11 +4,11 @@
 ```	python
 Welcome to the game Tic Tac Toe!
 
-Game mode selection:
+Select a game mode:
 
-1. Single Player Mode
-2. Versus Mode
-3. Spectator Mode (CPU vs CPU)
+1. Play with a super computer
+2. Play with a friend
+3. Spectate a game (CPU vs CPU)
 
 Your choice is (Enter the number): 1
 
@@ -17,7 +17,7 @@ Setting up the game...
 
 Please enter your name: Steven
 
-Token Selection:
+Select a token:
 A token is a letter (A to Z) that will be used to mark your moves on the board.
 
 Please enter the token of your choice: S
@@ -25,7 +25,7 @@ Please enter the token of your choice: S
 The token for 'Steven' is 'S'
 The token for 'COMP' is 'C'
 
-Turn Selection:
+Select turn:
 You can choose to go first or let the other player go first.
 
 Steven will pick which player goes first.
@@ -67,20 +67,24 @@ Steven, please make a move on the board (1 - 9): 2
     -----------
      7 | 8 | 9
 
+Player 'Steven(S)' chose spot '2'
 
-     C | S |
+     C | S | 3
     -----------
-       |   |
+     4 | 5 | 6
     -----------
-       |   |
+     7 | 8 | 9
 
+Player 'COMP(C)' chose spot '1'
 Steven, please make a move on the board (1 - 9): 5
 
-     C | S |
+     C | S | 3
     -----------
-       | S |
+     4 | S | 6
     -----------
-       |   |
+     7 | 8 | 9
+
+Player 'Steven(S)' chose spot '5'
 
      C | S |
     -----------
@@ -88,6 +92,7 @@ Steven, please make a move on the board (1 - 9): 5
     -----------
        | C |
 
+Player 'COMP(C)' chose spot '8'
 Steven, please make a move on the board (1 - 9): 3
 
       C | S | S
@@ -96,12 +101,15 @@ Steven, please make a move on the board (1 - 9): 3
      -----------
         | C |
 
+Player 'Steven(S)' chose spot '2'
 
       C | S | S
      -----------
         | S |
      -----------
       C | C |
+
+Player 'COMP(C)' chose spot '7'
 
 ...
 

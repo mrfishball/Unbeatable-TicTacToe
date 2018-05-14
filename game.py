@@ -28,12 +28,11 @@ class Game:
     self.set_turn(gameMode)
     self.draw_board(self.board)
 
-    # If game is not over, keep going
     while not self.game_over:
       # Loop through the array to keep correct turns
       for player in self.game_order:
           move = None
-          # If play is human type, ask for input
+          # Check player type to determine whether to ask for an input for the move or to generate a move
           if player["type"] == Game.HUMAN:
               move = self.get_human_spot(self.board, player)
           else:
@@ -50,6 +49,7 @@ class Game:
               self.game_over = True
               print("\n{} won the game!".format(player["name"]))
               break
+              
           # If it's a tie, update the game_over status and exist the game
           if (self.tie(self.board)):
               self.game_over = True
