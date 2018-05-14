@@ -1,7 +1,26 @@
 # A Python TicTacToe game with unbeatable AI
 
+## Change Log
+```
+v1.1
+
+- Heavily refactored code base to make it more modular.
+- Improved game menu.
+- Improved UI to make moves easier.
+- Improved system feedbacks to notify player next in line of last move and who makes the move.
+- Improved comments to make code easier to reason about.
+
+```
+
+```
+v1.0
+
+- Initial release
+
+```
+
 ## Demo
-```	python
+```
 Welcome to the game Tic Tac Toe!
 
 Select a game mode:
@@ -38,6 +57,7 @@ Would you like to go first or last, Steven? (Enter number):
 Your choice is: 1
 
 Steven will go first.
+COMP will go last.
 
 ```
 
@@ -86,28 +106,28 @@ Steven, please make a move on the board (1 - 9): 5
 
 Player 'Steven(S)' chose spot '5'
 
-     C | S |
+     C | S | 3
     -----------
-       | S |
+     4 | S | 6
     -----------
-       | C |
+     7 | C | 9
 
 Player 'COMP(C)' chose spot '8'
 Steven, please make a move on the board (1 - 9): 3
 
       C | S | S
      -----------
-        | S |
+      4 | S | 6
      -----------
-        | C |
+      7 | C | 9
 
 Player 'Steven(S)' chose spot '2'
 
       C | S | S
      -----------
-        | S |
+      4 | S | 6
      -----------
-      C | C |
+      C | C | 9
 
 Player 'COMP(C)' chose spot '7'
 

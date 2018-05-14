@@ -49,7 +49,7 @@ class Game:
               self.game_over = True
               print("\n{} won the game!".format(player["name"]))
               break
-              
+
           # If it's a tie, update the game_over status and exist the game
           if (self.tie(self.board)):
               self.game_over = True
@@ -136,6 +136,9 @@ class Game:
           self.game_order.append(self.player2)
           random.shuffle(self.game_order)
 
+          print("\n{} will go first.".format(self.game_order[0]["name"]))
+          print("{} will go last.".format(self.game_order[1]["name"]))
+
       elif (gameMode == 2):
           print("Roll dice to determine who gets to choose turn. \n")
           p1dice = Game.rolldice()
@@ -170,11 +173,13 @@ class Game:
           self.game_order.append(picker)
           self.game_order.append(player2)
           print("\n{} will go first.".format(picker["name"]))
+          print("{} will go last.".format(picker2["name"]))
 
       else:
           self.game_order.append(player2)
           self.game_order.append(picker)
           print("\n{} will go first.".format(player2["name"]))
+          print("{} will go last.".format(picker["name"]))
 
   # Verify user input before making the move.
   def isValidMove(self, board, move):

@@ -18,6 +18,7 @@ def set_player_object(game, player1, flag1, player2, flag2):
     game.player1["type"] = flag1
     game.player2["type"] = flag2
 
+# Ask user for a token choice and validate that token
 def set_player_token(player, tokenToCompare=None):
     ptoken = input("Please enter the token of your choice ({}): ".format(player))
     while not isTokenValid(ptoken, tokenToCompare):
@@ -25,11 +26,12 @@ def set_player_token(player, tokenToCompare=None):
         ptoken = input("Please enter the token of your choice ({}): ".format(player))
     return ptoken.upper()
 
+
 def set_cpu_token(tokenToCompare=None):
     cpuToken = random.choice(string.ascii_uppercase)
     while not isTokenValid(cpuToken, tokenToCompare):
-        cpuToken = cpuToken = random.choice(string.ascii_uppercase)
-    return cpuToken.upper()
+        cpuToken = random.choice(string.ascii_uppercase)
+    return cpuToken
 
 # Check to make sure the token enter matches the below criteria:
 # Must be length of 1
@@ -39,7 +41,7 @@ def isTokenValid(token, tokenToCompare=None):
         # Check if player1 token has been set if not then current token will belong to player1
         # Otherwise compare current token with player1's to determine its validity
         if tokenToCompare is not None:
-            if token.upper() != tokenToCompare:
+            if token != tokenToCompare:
                 return True
             else:
                 return False
