@@ -59,6 +59,8 @@ Your choice is: 1
 Steven will go first.
 COMP will go last.
 
+...
+
 ```
 
 ## Installation
@@ -71,7 +73,7 @@ None, pure python code.
 
 
 ## Unbeatable AI
-``` python
+```
 
      1 | 2 | 3
     -----------
