@@ -33,13 +33,34 @@ def set_cpu_token(tokenToCompare=None):
         cpuToken = random.choice(string.ascii_uppercase)
     return cpuToken
 
+# A helper function set_turn()
+# Put players in the right order for the game to start
+def set_turn_helper(game, picker, player2):
+    print("{} will pick which player goes first.\n".format(picker["name"]))
+    print("Would you like to go first or last, {}? (Enter number): ".format(picker["name"]))
+    print("\n1. Go first")
+    print("2. Go last\n")
+
+    choice = input("Your choice is: ")
+    while not re.match("^[1-2]{1}$", choice):
+        print("\nInvalid selection. Please try again. \n")
+        choice = input("Your choice is: ")
+
+    if choice == "1":
+        game.game_order.append(picker)
+        game.game_order.append(player2)
+    else:
+        game.game_order.append(player2)
+        game.game_order.append(picker)
+
+    print("\n{} will go first.".format(game.game_order[0]["name"]))
+    print("{} will go last.".format(game.game_order[1]["name"]))
+
 # Check to make sure the token enter matches the below criteria:
 # Must be length of 1
 # Must be a letter from A-Z, regardless of upper or lower case
 def isTokenValid(token, tokenToCompare=None):
     if re.match("^[a-zA-Z]{1}$", token):
-        # Check if player1 token has been set if not then current token will belong to player1
-        # Otherwise compare current token with player1's to determine its validity
         if tokenToCompare is not None:
             if token != tokenToCompare:
                 return True
@@ -49,3 +70,6 @@ def isTokenValid(token, tokenToCompare=None):
             return True
     else:
         return False
+
+def rolldice():
+    return random.randint(1, 6)

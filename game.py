@@ -16,12 +16,8 @@ class Game:
     self.game_over = False
     self.winner = None
 
-  @staticmethod
-  def rolldice():
-      return random.randint(1, 6)
-
   def start_game(self):
-    print("\nWelcome to the game Tic Tac Toe!")
+    print("\nWelcome to Tic Tac Toe Classic!")
     gameMode = self.set_game_mode()
     self.set_players(gameMode)
     self.set_token(gameMode)
@@ -41,13 +37,13 @@ class Game:
 
           self.make_a_move(move, player)
           self.draw_board(self.board)
-          print("\nPlayer '{}({})' chose spot '{}'".format(player["name"], player["token"], move+1))
+          print("\n'{} ({})' chose spot '{}'".format(player["name"], player["token"], move+1))
 
           # If a player wins, update the winner status and exist the game
           if (self.ifPlayerWin(player)):
               self.winner = player["name"]
               self.game_over = True
-              print("\n{} won the game!".format(player["name"]))
+              print("\n{} win!".format(player["name"]))
               break
 
           # If it's a tie, update the game_over status and exist the game
@@ -141,45 +137,24 @@ class Game:
 
       elif (gameMode == 2):
           print("Roll dice to determine who gets to choose turn. \n")
-          p1dice = Game.rolldice()
-          p2dice = Game.rolldice()
+
+          # Set initial value to None for both to ensure the while loop entry
+          # which will handle the actual dice roll
+          p1dice = None
+          p2dice = None
+          while p1dice == p2dice:
+              p1dice = util.rolldice()
+              p2dice = util.rolldice()
+
           print("{} rolled {}".format(self.player1["name"], p1dice))
           print("{} rolled {}\n".format(self.player2["name"], p2dice))
-          while p1dice == p2dice:
-              p1dice = Game.rolldice()
-              p2dice = Game.rolldice()
-              print("{} rolled {}".format(self.player1["name"], p1dice))
-              print("{} rolled {}\n".format(self.player2["name"], p2dice))
+
           if p1dice > p2dice:
-              self.set_turn_helper(self.player1, self.player2)
+              util.set_turn_helper(self, self.player1, self.player2)
           else:
-              self.set_turn_helper(self.player2, self.player1)
+              util.set_turn_helper(self, self.player2, self.player1)
       else:
-          self.set_turn_helper(self.player1, self.player2)
-
-  # A helper function set_turn()
-  # Put players in the right order for the game to start
-  def set_turn_helper(self, picker, player2):
-      print("{} will pick which player goes first.\n".format(picker["name"]))
-      print("Would you like to go first or last, {}? (Enter number): ".format(picker["name"]))
-      print("\n1. Go first")
-      print("2. Go last\n")
-      choice = input("Your choice is: ")
-      while not re.match("^[1-2]{1}$", choice):
-          print("\nInvalid selection. Please try again. \n")
-          choice = input("Your choice is: ")
-
-      if choice == "1":
-          self.game_order.append(picker)
-          self.game_order.append(player2)
-          print("\n{} will go first.".format(picker["name"]))
-          print("{} will go last.".format(picker2["name"]))
-
-      else:
-          self.game_order.append(player2)
-          self.game_order.append(picker)
-          print("\n{} will go first.".format(player2["name"]))
-          print("{} will go last.".format(picker["name"]))
+          util.set_turn_helper(self, self.player1, self.player2)
 
   # Verify user input before making the move.
   def isValidMove(self, board, move):
@@ -188,10 +163,10 @@ class Game:
           if move in board:
               return True
           else:
-              print("\nThis spot is taken. Please try again.")
+              print("\nThe move is either taken or invalid. Please try again.")
               return False
       except (TypeError, ValueError, IndexError) as e:
-          print("\nThis is not a valid move. Please try again.")
+          print("\nThat is not a valid move. Please try again.")
           return False
 
   # Makes moves permanent on the board
