@@ -8,7 +8,7 @@ v1.1
 - Improved game menu.
 - Improved UI to make moves easier.
 - Improved system feedbacks to notify player next in line of last move and who makes the move.
-- Improved comments to make code easier to reason about.
+- Updated comments to make code easier to reason about.
 
 ```
 

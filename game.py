@@ -11,6 +11,7 @@ class Game:
     self.board = Board()
     self.player1 = None
     self.player2 = None
+    self.tokens = []
     self.game_order = [] # Turn goes according to the player's position in the array
     self.game_over = False
     self.winner = None
@@ -84,8 +85,8 @@ class Game:
           player2 = Human(name2)
 
       else:
-          player1 = Cpu("Iris")
-          player2 = Cpu("Betty")
+          player1 = Cpu("Iris (AI)")
+          player2 = Cpu("Betty (AI)")
 
       self.player1 = player1
       self.player2 = player2
@@ -93,25 +94,27 @@ class Game:
   # Player can use any letters as tokens
   # Numbers and special unicode characters will not be allowed
   def set_token(self, gameMode):
-
-      print("\nSelect a token: ")
-      print("A token is a letter (A to Z) that will be used to mark your moves on the board. \n")
+      tokens = []
       p1Token = None
       p2Token = None
       player1 = self.player1.get_name()
       player2 = self.player2.get_name()
 
       if (gameMode == 3):
-          p1Token = util.generate_token()
-          p2Token = util.generate_token(p1Token)
-
-      elif (gameMode == 2):
-          p1Token = util.get_token_input(player1)
-          p2Token = util.get_token_input(player2, p1Token)
+          p1Token = util.generate_token(tokens)
+          p2Token = util.generate_token(tokens)
 
       else:
-          p1Token = util.get_token_input(player1)
-          p2Token = util.generate_token(p1Token)
+          print("\nSelect a token: ")
+          print("A token is a letter (A to Z) that will be used to mark your moves on the board. \n")
+
+          if (gameMode == 2):
+              p1Token = util.get_token_input(player1, tokens)
+              p2Token = util.get_token_input(player2, tokens)
+
+          else:
+              p1Token = util.get_token_input(player1, tokens)
+              p2Token = util.generate_token(tokens)
 
       self.player1.set_token(p1Token)
       self.player2.set_token(p2Token)

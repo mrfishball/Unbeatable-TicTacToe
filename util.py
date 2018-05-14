@@ -12,18 +12,21 @@ def get_name_input(playerNum=1):
     return player
 
 # Ask user for a token choice and validate that token
-def get_token_input(player, tokenToCompare=None):
+def get_token_input(player, tokens):
     ptoken = input("Please enter the token of your choice ({}): ".format(player))
-    while not isTokenValid(ptoken, tokenToCompare):
+    while not isTokenValid(ptoken, tokens):
         print("\nInvalid token for player '{}'. Please try again. \n".format(player))
         ptoken = input("Please enter the token of your choice ({}): ".format(player))
+    ptoken = ptoken.upper()
+    tokens.append(ptoken)
     return ptoken.upper()
 
 
-def generate_token(tokenToCompare=None):
+def generate_token(tokens):
     cpuToken = random.choice(string.ascii_uppercase)
-    while not isTokenValid(cpuToken, tokenToCompare):
+    while not isTokenValid(cpuToken, tokens):
         cpuToken = random.choice(string.ascii_uppercase)
+    tokens.append(cpuToken)
     return cpuToken
 
 # A helper function set_turn()
@@ -49,13 +52,10 @@ def set_turn_helper(game, picker, player2):
 # Check to make sure the token enter matches the below criteria:
 # Must be length of 1
 # Must be a letter from A-Z, regardless of upper or lower case
-def isTokenValid(token, tokenToCompare=None):
+def isTokenValid(token, tokens):
     if re.match("^[a-zA-Z]{1}$", token):
-        if tokenToCompare is not None:
-            if token != tokenToCompare:
-                return True
-            else:
-                return False
+        if token in tokens:
+            return False
         else:
             return True
     else:
