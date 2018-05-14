@@ -3,6 +3,9 @@ class Board:
     def __init__(self):
         self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+    # Basic board structure
+    # Added padding on both sides for better readibility
+    # def draw_board(self, board):
     def draw_board(self):
         print("""
           {} | {} | {}

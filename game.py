@@ -1,17 +1,16 @@
 import re
 import random
 import util
+from board import *
+from human import *
+from cpu import *
 
 class Game:
 
-  # Flags for identifying a cpu player or a human player.
-  CPU = "CPU"
-  HUMAN = "Human"
-
   def __init__(self):
-    self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    self.player1 = {}
-    self.player2 = {}
+    self.board = Board()
+    self.player1 = None
+    self.player2 = None
     self.game_order = [] # Turn goes according to the player's position in the array
     self.game_over = False
     self.winner = None
@@ -22,11 +21,13 @@ class Game:
     self.set_players(gameMode)
     self.set_token(gameMode)
     self.set_turn(gameMode)
-    self.draw_board(self.board)
+    self.board.draw_board()
 
     while not self.game_over:
       # Loop through the array to keep correct turns
       for player in self.game_order:
+          player_name = player.get_name()
+          player_token = player.get_token()
           move = None
           # Check player type to determine whether to ask for an input for the move or to generate a move
           if player["type"] == Game.HUMAN:
@@ -36,14 +37,14 @@ class Game:
               move = self.best_move(self.board, player, player)[0]
 
           self.make_a_move(move, player)
-          self.draw_board(self.board)
-          print("\n'{} ({})' chose spot '{}'".format(player["name"], player["token"], move+1))
+          self.board.draw_board()
+          print("\n'{} ({})' chose spot '{}'".format(player_name, player_token, move+1))
 
           # If a player wins, update the winner status and exist the game
           if (self.ifPlayerWin(player)):
-              self.winner = player["name"]
+              self.winner = player_name
               self.game_over = True
-              print("\n{} win!".format(player["name"]))
+              print("\n{} win!".format(player_name))
               break
 
           # If it's a tie, update the game_over status and exist the game
@@ -52,21 +53,6 @@ class Game:
               print("\nIt's a tie!")
               break
 
-  # Basic board structure
-  # Added padding on both sides for better readibility
-  def draw_board(self, board):
-      print("""
-        {} | {} | {}
-       -----------
-        {} | {} | {}
-       -----------
-        {} | {} | {}
-      """.format(*board))
-
-  # Select game mode from:
-  # Single player mode (Human vs Comp)
-  # Versus mode (Human vs Human)
-  # Spectator mode (Comp vs Comp)
   def set_game_mode(self):
       print("\nSelect a game mode: \n")
       print("1. Play against a super computer")
@@ -83,16 +69,26 @@ class Game:
       return int(gameMode)
 
   def set_players(self, gameMode):
+      player1 = None
+      player2 = None
 
       if (gameMode == 1):
-          player = util.set_player_name()
-          util.set_player_object(self, player, Game.HUMAN, "COMP", Game.CPU)
+          name1 = util.get_name_input()
+          player1 = Human(name1)
+          player2 = Cpu("Iris")
+
       elif (gameMode == 2):
-          player1 = util.set_player_name()
-          player2 = util.set_player_name(2)
-          util.set_player_object(self, player1, Game.HUMAN, player2, Game.HUMAN)
+          name1 = util.get_name_input()
+          name2 = util.get_name_input(2)
+          player1 = Human(name1)
+          player2 = Human(name2)
+
       else:
-          util.set_player_object(self, "COMP 1", Game.CPU, "COMP 2", Game.CPU)
+          player1 = Cpu("Iris")
+          player2 = Cpu("Betty")
+
+      self.player1 = player1
+      self.player2 = player2
 
   # Player can use any letters as tokens
   # Numbers and special unicode characters will not be allowed
@@ -102,24 +98,26 @@ class Game:
       print("A token is a letter (A to Z) that will be used to mark your moves on the board. \n")
       p1Token = None
       p2Token = None
+      player1 = self.player1.get_name()
+      player2 = self.player2.get_name()
 
       if (gameMode == 3):
-          p1Token = util.set_cpu_token()
-          p2Token = util.set_cpu_token(p1Token)
+          p1Token = util.generate_token()
+          p2Token = util.generate_token(p1Token)
 
       elif (gameMode == 2):
-          p1Token = util.set_player_token(self.player1["name"])
-          p2Token = util.set_player_token(self.player2["name"], p1Token)
+          p1Token = util.get_token_input(player1)
+          p2Token = util.get_token_input(player2, p1Token)
 
       else:
-          p1Token = util.set_player_token(self.player1["name"])
-          p2Token = util.set_cpu_token(p1Token)
+          p1Token = util.get_token_input(player1)
+          p2Token = util.generate_token(p1Token)
 
-      self.player1["token"] = p1Token
-      self.player2["token"] = p2Token
+      self.player1.set_token(p1Token)
+      self.player2.set_token(p2Token)
 
-      print("\nThe token for '{}' is '{}'".format(self.player1["name"], self.player1["token"]))
-      print("The token for '{}' is '{}'".format(self.player2["name"], self.player2["token"]))
+      print("\nThe token for '{}' is '{}'".format(player1, p1Token))
+      print("The token for '{}' is '{}'".format(player2, p2Token))
 
   # Pick which player goes first
   # Only if versus mode is selected then players will roll dice to determine who gets to
@@ -127,13 +125,11 @@ class Game:
   def set_turn(self, gameMode):
       print("\nTurn Selection:")
       print("You can choose to go first or let the other player go first.\n")
+
       if (gameMode == 3):
           self.game_order.append(self.player1)
           self.game_order.append(self.player2)
           random.shuffle(self.game_order)
-
-          print("\n{} will go first.".format(self.game_order[0]["name"]))
-          print("{} will go last.".format(self.game_order[1]["name"]))
 
       elif (gameMode == 2):
           print("Roll dice to determine who gets to choose turn. \n")
@@ -146,8 +142,8 @@ class Game:
               p1dice = util.rolldice()
               p2dice = util.rolldice()
 
-          print("{} rolled {}".format(self.player1["name"], p1dice))
-          print("{} rolled {}\n".format(self.player2["name"], p2dice))
+          print("{} rolled {}".format(self.player1.get_name(), p1dice))
+          print("{} rolled {}\n".format(self.player2.get_name(), p2dice))
 
           if p1dice > p2dice:
               util.set_turn_helper(self, self.player1, self.player2)
@@ -156,22 +152,8 @@ class Game:
       else:
           util.set_turn_helper(self, self.player1, self.player2)
 
-  # Verify user input before making the move.
-  def isValidMove(self, board, move):
-      try:
-          move = int(move)
-          if move in board:
-              return True
-          else:
-              print("\nThe move is either taken or invalid. Please try again.")
-              return False
-      except (TypeError, ValueError, IndexError) as e:
-          print("\nThat is not a valid move. Please try again.")
-          return False
-
-  # Makes moves permanent on the board
-  def make_a_move(self, position, player):
-      self.board[position] = player["token"]
+      print("\n{} will go first.".format(self.game_order[0].get_name()))
+      print("{} will go last.".format(self.game_order[1].get_name()))
 
   # Prompt players(human players only) to make a valid move before registering it
   # in make_a_move function
