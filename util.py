@@ -9,7 +9,7 @@ def get_name_input(playerNum=1):
     while not player.strip():
         print("\nInvalid name. Please try again. \n")
         player = input("Please enter your name: ")
-    return player
+    return player.strip()
 
 # Ask user for a token choice and validate that token
 def get_token_input(player, tokens):
@@ -23,11 +23,11 @@ def get_token_input(player, tokens):
 
 # Generate token for AI
 def generate_token(tokens):
-    cpuToken = random.choice(string.ascii_uppercase)
+    cpuToken = random.choice(string.ascii_lowercase)
     while not isTokenValid(cpuToken, tokens):
-        cpuToken = random.choice(string.ascii_uppercase)
+        cpuToken = random.choice(string.ascii_lowercase)
     tokens.append(cpuToken)
-    return cpuToken
+    return cpuToken.upper()
 
 # A helper function set_turn()
 # Put players in the right order for the game to start

@@ -4,6 +4,10 @@ class Human(Player):
 
     def __init__(self, name):
         super().__init__(name)
+        self.dice = None
+
+    def set_dice(self, diceroll):
+        self.dice = diceroll
 
     def make_a_move(self, game):
         move = self.get_human_spot(game.board)

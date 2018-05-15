@@ -20,7 +20,7 @@ class Game:
     gameMode = self.set_game_mode()
     self.set_players(gameMode)
     self.set_token(gameMode, self.player1, self.player2)
-    self.set_turn(gameMode)
+    self.set_turn(gameMode, self.player1, self.player2, self.game_order)
     self.board.draw_board()
 
     while not self.game_over:
@@ -35,7 +35,7 @@ class Game:
           print("\n'{} ({})' chose spot '{}'".format(player_name, player_token, move))
 
           # If a player wins, update the winner status and exist the game
-          if (self.ifPlayerWin(player)):
+          if (self.ifPlayerWin(self.board, player)):
               self.winner = player_name
               self.game_over = True
               print("\n{} win!".format(player_name))
@@ -121,13 +121,13 @@ class Game:
   # Pick which player goes first
   # Only if versus mode is selected then players will roll dice to determine who gets to
   # choose to go first or last
-  def set_turn(self, gameMode):
+  def set_turn(self, gameMode, player1, player2, game_order):
 
       # Spectate a game
       if (gameMode == 3):
-          self.game_order.append(self.player1)
-          self.game_order.append(self.player2)
-          random.shuffle(self.game_order)
+          game_order.append(player1)
+          game_order.append(player2)
+          random.shuffle(game_order)
 
       else:
           print("\nTurn Selection:")
@@ -144,20 +144,23 @@ class Game:
                   p1dice = util.rolldice()
                   p2dice = util.rolldice()
 
-              print("{} rolled {}".format(self.player1.name, p1dice))
-              print("{} rolled {}\n".format(self.player2.name, p2dice))
+              player1.set_dice(p1dice)
+              player2.set_dice(p2dice)
+
+              print("{} rolled {}".format(player1.name, p1dice))
+              print("{} rolled {}\n".format(player2.name, p2dice))
 
               if p1dice > p2dice:
-                  util.set_turn_helper(self.game_order, self.player1, self.player2)
+                  util.set_turn_helper(game_order, player1, player2)
               else:
-                  util.set_turn_helper(self.game_order, self.player2, self.player1)
+                  util.set_turn_helper(game_order, player2, player1)
 
           # Play against AI
           else:
-              util.set_turn_helper(self.game_order, self.player1, self.player2)
+              util.set_turn_helper(game_order, player1, player2)
 
-      print("\n{} will go first.".format(self.game_order[0].name))
-      print("{} will go last.".format(self.game_order[1].name))
+      print("\n{} will go first.".format(game_order[0].name))
+      print("{} will go last.".format(game_order[1].name))
 
   # Get the next player to make a move.
   def get_opponent(self, player):
@@ -166,8 +169,8 @@ class Game:
       return self.player1
 
   # Check if the game's been won by a player
-  def ifPlayerWin(self, player):
-      board = self.board.board
+  def ifPlayerWin(self, board, player):
+      board = board.board
       token = player.token
       return (board[0] == board[1] == board[2] == token) or \
         (board[3] == board[4] == board[5] == token) or \

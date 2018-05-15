@@ -40,7 +40,7 @@ class Board:
         self.visual_board[position] = "\033[4m{}\033[0m".format(player)
         self.insert_board(position, player)
 
-    def available_moves(self, tokens):
+    def available_moves(self):
         return [pos for pos, spot in enumerate(self.board) if isinstance(spot, int)]
 
     def isValidMove(self, move):
