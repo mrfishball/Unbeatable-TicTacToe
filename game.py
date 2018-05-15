@@ -42,10 +42,11 @@ class Game:
               break
 
           # If it's a tie, update the game_over status and exist the game
-          if (self.tie()):
+          if (self.tie(self.board, self.player1, self.player2)):
               self.game_over = True
               print("\nIt's a tie!")
               break
+    print(self.board.board)
 
   def game_menu(self):
       print("\nWelcome to Tic Tac Toe Classic!")
@@ -182,9 +183,9 @@ class Game:
         (board[2] == board[4] == board[6] == token)
 
   # Check if game is tie
-  def tie(self):
-    return len([spot for spot in self.board.board if spot == self.player1.token
-        or spot == self.player2.token]) == 9
+  def tie(self, board, player1, player2):
+    return len([spot for spot in board.board if spot == player1.token
+        or spot == player2.token]) == 9
 
 if __name__ == '__main__':
   game = Game()

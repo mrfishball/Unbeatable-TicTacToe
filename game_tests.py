@@ -102,8 +102,11 @@ class TestGame(unittest.TestCase):
         opponent = self.game.get_opponent(self.game.player2)
         self.assertEqual(opponent, self.game.player1)
 
+    # Test the game to correctly detect win patterns
     def test_ifPlayerWin(self):
         board = Board()
+        player = Human("Tony")
+        player.set_token("X")
         win_pattern = [
             ["X", "X", "X", 4, 5, 6, 7, 8, 9],
             [1, 2, 3, "X", "X", "X", 7, 8, 9],
@@ -114,8 +117,6 @@ class TestGame(unittest.TestCase):
             ["X", 2, 3, 4, "X", 6, 7, 8, "X"],
             [1, 2, "X", 4, "X", 6, "X", 8, 9]
         ]
-        player = Human("Tony")
-        player.set_token("X")
 
         for pattern in win_pattern:
             with self.subTest(pattern = pattern):
@@ -123,17 +124,25 @@ class TestGame(unittest.TestCase):
                 result = self.game.ifPlayerWin(board, player)
                 self.assertTrue(result)
 
-        # board.board = ["X", "X", "X", 4, 5, 6, 7, 8, 9]
-        # result = self.game.ifPlayerWin(board, player)
-        # self.assertTrue(result)
-        #
-        # board.board = [1, 2, 3, "X", "X", "X", 7, 8, 9]
-        # result = self.game.ifPlayerWin(board, player)
-        # self.assertTrue(result)
-        #
-        # board.board = [1, 2, 3, 4, 5, 6, "X", "X", "X"]
-        # result = self.game.ifPlayerWin(board, player)
-        # self.assertTrue(result)
+    # Test that function detects ties correctly
+    def test_tie(self):
+        board = Board()
+        player = Human("Tony")
+        player.set_token("X")
+        player2 = Human("Mary")
+        player2.set_token("O")
+
+        patterns = [
+            ["X", "O", "X", "X", "O", "X", "O", "X", "O"],
+            ["X", "O", "O", "O", "O", "X", "X", "X", "O"],
+            ["O", "X", "X", "X", "O", "O", "O", "X", "X"]
+        ]
+
+        for pattern in patterns:
+            with self.subTest(pattern = pattern):
+                board.board = pattern
+                result = self.game.tie(board, player, player2)
+                self.assertTrue(result)
 
 if __name__ == '__main__':
     unittest.main()

@@ -15,15 +15,17 @@ class Cpu(Player):
     # and check against whether it'll lead to opponent winning the game or
     # the way around while keep track of scores of each move.
     def best_move(self, game, nextMove, player):
+        opponent = game.get_opponent(player)
+
         # Always start at the middle if it's available and AI is first turn
         if (len(game.board.available_moves()) == 9):
             return [4]
         # Score system for analyzing each move
-        if (game.ifPlayerWin(game.board, game.get_opponent(player))):
+        if (game.ifPlayerWin(game.board, opponent)):
             return (-1, -10)
         elif (game.ifPlayerWin(game.board, player)):
             return (-1, 10)
-        elif (game.tie()):
+        elif (game.tie(game.board, player, opponent)):
             return (-1, 0)
 
         moves = []
