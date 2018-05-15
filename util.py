@@ -21,6 +21,7 @@ def get_token_input(player, tokens):
     tokens.append(ptoken)
     return ptoken.upper()
 
+# Generate token for AI
 def generate_token(tokens):
     cpuToken = random.choice(string.ascii_uppercase)
     while not isTokenValid(cpuToken, tokens):

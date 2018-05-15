@@ -9,7 +9,7 @@ class Cpu(Player):
         player = self
         tokens = [player.token for player in game.game_order]
         move = player.best_move(game, tokens, player, player)[0]
-        game.board.insert(move, player.token)
+        game.board.update_visual(move, player.token)
         return move + 1
 
     # Generate best moves by scanning through combinations of patterns
@@ -30,7 +30,7 @@ class Cpu(Player):
         moves = []
         # Simulate opponent's moves and generate best countermoves.
         for move in game.board.available_moves(tokens):
-            game.board.insert(move, nextMove.token)
+            game.board.insert_board(move, nextMove.token)
             # Recursively call best_move to simulate the next best move and next countermoves
             score = self.best_move(game, tokens, game.get_opponent(nextMove), player)[1]
             moves.append((move, score))

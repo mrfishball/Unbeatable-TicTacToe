@@ -26,7 +26,7 @@ class Game:
     while not self.game_over:
       # Loop through the array to keep correct turns
       for player in self.game_order:
-          
+
           player_name = player.name
           player_token = player.token
 
@@ -66,17 +66,20 @@ class Game:
       player1 = None
       player2 = None
 
+      # Play against AI
       if (gameMode == 1):
           name1 = util.get_name_input()
           player1 = Human(name1)
           player2 = Cpu("Iris")
 
+      # Play against a firend
       elif (gameMode == 2):
           name1 = util.get_name_input()
           name2 = util.get_name_input(2)
           player1 = Human(name1)
           player2 = Human(name2)
 
+      # Spectate a game
       else:
           player1 = Cpu("Iris (AI)")
           player2 = Cpu("Betty (AI)")
@@ -93,6 +96,7 @@ class Game:
       player1 = self.player1.name
       player2 = self.player2.name
 
+      # Spectate a game
       if (gameMode == 3):
           p1Token = util.generate_token(tokens)
           p2Token = util.generate_token(tokens)
@@ -101,10 +105,12 @@ class Game:
           print("\nSelect a token: ")
           print("A token is a letter (A to Z) that will be used to mark your moves on the board. \n")
 
+          # Play against a friend
           if (gameMode == 2):
               p1Token = util.get_token_input(player1, tokens)
               p2Token = util.get_token_input(player2, tokens)
 
+          # Play against AI
           else:
               p1Token = util.get_token_input(player1, tokens)
               p2Token = util.generate_token(tokens)
@@ -122,11 +128,13 @@ class Game:
       print("\nTurn Selection:")
       print("You can choose to go first or let the other player go first.\n")
 
+      # Spectate a game
       if (gameMode == 3):
           self.game_order.append(self.player1)
           self.game_order.append(self.player2)
           random.shuffle(self.game_order)
 
+      # Play against a friend
       elif (gameMode == 2):
           print("Roll dice to determine who gets to choose turn. \n")
 
@@ -145,6 +153,8 @@ class Game:
               util.set_turn_helper(self.game_order, self.player1, self.player2)
           else:
               util.set_turn_helper(self.game_order, self.player2, self.player1)
+
+      # Play against AI
       else:
           util.set_turn_helper(self.game_order, self.player1, self.player2)
 
@@ -159,7 +169,7 @@ class Game:
 
   # Check if the game's been won by a player
   def ifPlayerWin(self, player):
-      board = re.sub('[()]', '', self.board.board)
+      board = self.board.board
       token = player.token
       return (board[0] == board[1] == board[2] == token) or \
         (board[3] == board[4] == board[5] == token) or \
