@@ -13,3 +13,11 @@ class Player(ABC):
     @abstractmethod
     def make_a_move(self):
         pass
+
+def main():
+    a = Player("Steven")
+
+    print(a)
+
+if __name__ == '__main__':
+    main()
