@@ -16,10 +16,10 @@ class Game:
     self.winner = None
 
   def start_game(self):
-    print("\nWelcome to Tic Tac Toe Classic!")
+    self.game_menu()
     gameMode = self.set_game_mode()
     self.set_players(gameMode)
-    self.set_token(gameMode)
+    self.set_token(gameMode, self.player1, self.player2)
     self.set_turn(gameMode)
     self.board.draw_board()
 
@@ -47,11 +47,14 @@ class Game:
               print("\nIt's a tie!")
               break
 
-  def set_game_mode(self):
+  def game_menu(self):
+      print("\nWelcome to Tic Tac Toe Classic!")
       print("\nSelect a game mode: \n")
       print("1. Play against a super computer")
       print("2. Play with a friend")
       print("3. Spectate a game (CPU vs CPU) \n")
+
+  def set_game_mode(self):
       gameMode = input("Your choice is (Enter the number): ")
 
       # If the user input is not an integer or not in range of
@@ -63,14 +66,12 @@ class Game:
       return int(gameMode)
 
   def set_players(self, gameMode):
-      player1 = None
-      player2 = None
 
       # Play against AI
       if (gameMode == 1):
           name1 = util.get_name_input()
           player1 = Human(name1)
-          player2 = Cpu("Iris")
+          player2 = Cpu("Iris (AI)")
 
       # Play against a firend
       elif (gameMode == 2):
@@ -89,12 +90,8 @@ class Game:
 
   # Player can use any letters as tokens
   # Numbers and special unicode characters will not be allowed
-  def set_token(self, gameMode):
+  def set_token(self, gameMode, player1, player2):
       tokens = []
-      p1Token = None
-      p2Token = None
-      player1 = self.player1.name
-      player2 = self.player2.name
 
       # Spectate a game
       if (gameMode == 3):
@@ -107,19 +104,19 @@ class Game:
 
           # Play against a friend
           if (gameMode == 2):
-              p1Token = util.get_token_input(player1, tokens)
-              p2Token = util.get_token_input(player2, tokens)
+              p1Token = util.get_token_input(player1.name, tokens)
+              p2Token = util.get_token_input(player2.name, tokens)
 
           # Play against AI
           else:
-              p1Token = util.get_token_input(player1, tokens)
+              p1Token = util.get_token_input(player1.name, tokens)
               p2Token = util.generate_token(tokens)
 
       self.player1.set_token(p1Token)
       self.player2.set_token(p2Token)
 
-      print("\nThe token for '{}' is '{}'".format(player1, p1Token))
-      print("The token for '{}' is '{}'".format(player2, p2Token))
+      print("\nThe token for '{}' is '{}'".format(player1.name, p1Token))
+      print("The token for '{}' is '{}'".format(player2.name, p2Token))
 
   # Pick which player goes first
   # Only if versus mode is selected then players will roll dice to determine who gets to
@@ -140,8 +137,8 @@ class Game:
 
           # Set initial value to None for both to ensure the while loop entry
           # which will handle the actual dice roll
-          p1dice = None
-          p2dice = None
+          p1dice = util.rolldice()
+          p2dice = util.rolldice()
           while p1dice == p2dice:
               p1dice = util.rolldice()
               p2dice = util.rolldice()
