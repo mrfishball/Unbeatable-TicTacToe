@@ -1,42 +1,42 @@
 from player import *
+from game import *
 
 class Cpu(Player):
 
     def __init__(self, name):
         super().__init__(name)
 
-    def make_a_move(self, game):
+    def make_a_move(self, board):
         player = self
-        move = player.best_move(game, player, player)[0]
-        game.board.update_visual(move, player.token)
+        move = player.best_move(board, player, player)[0]
+        board.update_visual(move, player.token)
         return move + 1
 
     # Generate best moves by scanning through combinations of patterns
     # and check against whether it'll lead to opponent winning the game or
     # the way around while keep track of scores of each move.
-    def best_move(self, game, nextMove, player):
-        opponent = game.get_opponent(player)
+    def best_move(self, board, nextMove, player):
 
         # Always start at the middle if it's available and AI is first turn
-        if (len(game.board.available_moves()) == 9):
+        if (len(board.available_moves()) == 9):
             return [4]
         # Score system for analyzing each move
-        if (game.ifPlayerWin(game.board, opponent)):
+        if (Game.ifPlayerWin(board, player.opponent)):
             return (-1, -10)
-        elif (game.ifPlayerWin(game.board, player)):
+        elif (Game.ifPlayerWin(board, player)):
             return (-1, 10)
-        elif (game.tie(game.board, player, opponent)):
+        elif (Game.tie(board, player, player.opponent)):
             return (-1, 0)
 
         moves = []
         # Simulate opponent's moves and generate best countermoves.
-        for move in game.board.available_moves():
-            game.board.insert_board(move, nextMove.token)
+        for move in board.available_moves():
+            board.insert_board(move, nextMove.token)
             # Recursively call best_move to simulate the next best move and next countermoves
-            score = self.best_move(game, game.get_opponent(nextMove), player)[1]
+            score = self.best_move(board, nextMove.opponent, player)[1]
             moves.append((move, score))
             # Undo the changes to reflect the current state of the board
-            game.board.board[move] = move + 1
+            board.board[move] = move + 1
 
         # if the AI player is the player making the next move, then
         # we want to get the best move, move with the highest score

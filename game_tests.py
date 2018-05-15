@@ -92,21 +92,21 @@ class TestGame(unittest.TestCase):
                 self.assertEqual(self.game.game_order[1], self.game.player2)
                 self.assertEqual(self.game.game_order[0], self.game.player1)
 
-    def test_get_opponent(self):
-        self.game.player1 = Human("John")
-        self.game.player2 = Cpu("Betty (AI)")
-
-        opponent = self.game.get_opponent(self.game.player1)
-        self.assertEqual(opponent, self.game.player2)
-
-        opponent = self.game.get_opponent(self.game.player2)
-        self.assertEqual(opponent, self.game.player1)
+    # def test_get_opponent(self):
+    #     self.game.player1 = Human("John")
+    #     self.game.player2 = Cpu("Betty (AI)")
+    #
+    #     opponent = self.game.get_opponent(self.game.player1)
+    #     self.assertEqual(opponent, self.game.player2)
+    #
+    #     opponent = self.game.get_opponent(self.game.player2)
+    #     self.assertEqual(opponent, self.game.player1)
 
     # Test the game to correctly detect win patterns
     def test_ifPlayerWin(self):
         board = Board()
         player = Human("Tony")
-        player.set_token("X")
+        player.token = "X"
         win_pattern = [
             ["X", "X", "X", 4, 5, 6, 7, 8, 9],
             [1, 2, 3, "X", "X", "X", 7, 8, 9],
@@ -128,9 +128,9 @@ class TestGame(unittest.TestCase):
     def test_tie(self):
         board = Board()
         player = Human("Tony")
-        player.set_token("X")
+        player.token = "X"
         player2 = Human("Mary")
-        player2.set_token("O")
+        player2.token = "O"
 
         patterns = [
             ["X", "O", "X", "X", "O", "X", "O", "X", "O"],

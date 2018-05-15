@@ -15,6 +15,26 @@ class Game:
     self.game_over = False
     self.winner = None
 
+  # Check if the game's been won by a player
+  @staticmethod
+  def ifPlayerWin(board, player):
+      board = board.board
+      token = player.token
+      return (board[0] == board[1] == board[2] == token) or \
+        (board[3] == board[4] == board[5] == token) or \
+        (board[6] == board[7] == board[8] == token) or \
+        (board[0] == board[3] == board[6] == token) or \
+        (board[1] == board[4] == board[7] == token) or \
+        (board[2] == board[5] == board[8] == token) or \
+        (board[0] == board[4] == board[8] == token) or \
+        (board[2] == board[4] == board[6] == token)
+
+  # Check if game is tie
+  @staticmethod
+  def tie(board, player1, player2):
+    return len([spot for spot in board.board if spot == player1.token
+        or spot == player2.token]) == 9
+
   def start_game(self):
     self.game_menu()
     gameMode = self.set_game_mode()
@@ -30,7 +50,7 @@ class Game:
           player_name = player.name
           player_token = player.token
 
-          move = player.make_a_move(self)
+          move = player.make_a_move(self.board)
           self.board.draw_board()
           print("\n'{} ({})' chose spot '{}'".format(player_name, player_token, move))
 
@@ -88,6 +108,8 @@ class Game:
 
       self.player1 = player1
       self.player2 = player2
+      self.player1.opponent = self.player2
+      self.player2.opponent = self.player1
 
   # Player can use any letters as tokens
   # Numbers and special unicode characters will not be allowed
@@ -113,8 +135,8 @@ class Game:
               p1Token = util.get_token_input(player1.name, tokens)
               p2Token = util.generate_token(tokens)
 
-      self.player1.set_token(p1Token)
-      self.player2.set_token(p2Token)
+      self.player1.token = p1Token
+      self.player2.token = p2Token
 
       print("\nThe token for '{}' is '{}'".format(player1.name, p1Token))
       print("The token for '{}' is '{}'".format(player2.name, p2Token))
@@ -145,8 +167,8 @@ class Game:
                   p1dice = util.rolldice()
                   p2dice = util.rolldice()
 
-              player1.set_dice(p1dice)
-              player2.set_dice(p2dice)
+              player1.dice = p1dice
+              player2.dice = p2dice
 
               print("{} rolled {}".format(player1.name, p1dice))
               print("{} rolled {}\n".format(player2.name, p2dice))
@@ -162,30 +184,6 @@ class Game:
 
       print("\n{} will go first.".format(game_order[0].name))
       print("{} will go last.".format(game_order[1].name))
-
-  # Get the next player to make a move.
-  def get_opponent(self, player):
-      if player == self.player1:
-          return self.player2
-      return self.player1
-
-  # Check if the game's been won by a player
-  def ifPlayerWin(self, board, player):
-      board = board.board
-      token = player.token
-      return (board[0] == board[1] == board[2] == token) or \
-        (board[3] == board[4] == board[5] == token) or \
-        (board[6] == board[7] == board[8] == token) or \
-        (board[0] == board[3] == board[6] == token) or \
-        (board[1] == board[4] == board[7] == token) or \
-        (board[2] == board[5] == board[8] == token) or \
-        (board[0] == board[4] == board[8] == token) or \
-        (board[2] == board[4] == board[6] == token)
-
-  # Check if game is tie
-  def tie(self, board, player1, player2):
-    return len([spot for spot in board.board if spot == player1.token
-        or spot == player2.token]) == 9
 
 if __name__ == '__main__':
   game = Game()
