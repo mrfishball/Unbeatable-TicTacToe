@@ -122,8 +122,6 @@ class Game:
   # Only if versus mode is selected then players will roll dice to determine who gets to
   # choose to go first or last
   def set_turn(self, gameMode):
-      print("\nTurn Selection:")
-      print("You can choose to go first or let the other player go first.\n")
 
       # Spectate a game
       if (gameMode == 3):
@@ -131,29 +129,32 @@ class Game:
           self.game_order.append(self.player2)
           random.shuffle(self.game_order)
 
-      # Play against a friend
-      elif (gameMode == 2):
-          print("Roll dice to determine who gets to choose turn. \n")
+      else:
+          print("\nTurn Selection:")
+          print("You can choose to go first or let the other player go first.\n")
+          # Play against a friend
+          if (gameMode == 2):
+              print("Roll dice to determine who gets to choose turn. \n")
 
-          # Set initial value to None for both to ensure the while loop entry
-          # which will handle the actual dice roll
-          p1dice = util.rolldice()
-          p2dice = util.rolldice()
-          while p1dice == p2dice:
+              # Set initial value to None for both to ensure the while loop entry
+              # which will handle the actual dice roll
               p1dice = util.rolldice()
               p2dice = util.rolldice()
+              while p1dice == p2dice:
+                  p1dice = util.rolldice()
+                  p2dice = util.rolldice()
 
-          print("{} rolled {}".format(self.player1.name, p1dice))
-          print("{} rolled {}\n".format(self.player2.name, p2dice))
+              print("{} rolled {}".format(self.player1.name, p1dice))
+              print("{} rolled {}\n".format(self.player2.name, p2dice))
 
-          if p1dice > p2dice:
-              util.set_turn_helper(self.game_order, self.player1, self.player2)
+              if p1dice > p2dice:
+                  util.set_turn_helper(self.game_order, self.player1, self.player2)
+              else:
+                  util.set_turn_helper(self.game_order, self.player2, self.player1)
+
+          # Play against AI
           else:
-              util.set_turn_helper(self.game_order, self.player2, self.player1)
-
-      # Play against AI
-      else:
-          util.set_turn_helper(self.game_order, self.player1, self.player2)
+              util.set_turn_helper(self.game_order, self.player1, self.player2)
 
       print("\n{} will go first.".format(self.game_order[0].name))
       print("{} will go last.".format(self.game_order[1].name))
