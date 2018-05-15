@@ -7,12 +7,6 @@ class Player(ABC):
         self.name = name
         super(Player, self).__init__()
 
-    def get_name(self):
-        return self.name
-
-    def get_token(self):
-        return self.token
-
     def set_token(self, token):
         self.token = token
 

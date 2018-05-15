@@ -17,10 +17,9 @@ def get_token_input(player, tokens):
     while not isTokenValid(ptoken, tokens):
         print("\nInvalid token for player '{}'. Please try again. \n".format(player))
         ptoken = input("Please enter the token of your choice ({}): ".format(player))
-    ptoken = ptoken.upper()
+    ptoken = ptoken.lower()
     tokens.append(ptoken)
     return ptoken.upper()
-
 
 def generate_token(tokens):
     cpuToken = random.choice(string.ascii_uppercase)
@@ -31,9 +30,9 @@ def generate_token(tokens):
 
 # A helper function set_turn()
 # Put players in the right order for the game to start
-def set_turn_helper(game, picker, player2):
-    print("{} will pick which player goes first.\n".format(picker.get_name()))
-    print("Would you like to go first or last, {}? (Enter number): ".format(picker.get_name()))
+def set_turn_helper(game_order, picker, player2):
+    print("{} will pick which player goes first.\n".format(picker.name))
+    print("Would you like to go first or last, {}? (Enter number): ".format(picker.name))
     print("\n1. Go first")
     print("2. Go last\n")
 
@@ -43,16 +42,17 @@ def set_turn_helper(game, picker, player2):
         choice = input("Your choice is: ")
 
     if choice == "1":
-        game.game_order.append(picker)
-        game.game_order.append(player2)
+        game_order.append(picker)
+        game_order.append(player2)
     else:
-        game.game_order.append(player2)
-        game.game_order.append(picker)
+        game_order.append(player2)
+        game_order.append(picker)
 
 # Check to make sure the token enter matches the below criteria:
 # Must be length of 1
 # Must be a letter from A-Z, regardless of upper or lower case
 def isTokenValid(token, tokens):
+    token = token.lower()
     if re.match("^[a-zA-Z]{1}$", token):
         if token in tokens:
             return False
