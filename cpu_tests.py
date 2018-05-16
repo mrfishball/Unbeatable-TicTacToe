@@ -1,6 +1,4 @@
 import unittest
-from unittest import mock
-from io import StringIO
 from cpu import *
 from board import *
 

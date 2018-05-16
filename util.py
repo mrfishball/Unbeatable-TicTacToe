@@ -17,7 +17,7 @@ def get_name_input(game_order):
     game_order.append(player)
     return player
 
-# Ask user for a token choice and validate that token
+# Ask user for a token choice and pass it on for validation
 def get_token_input(player, tokens):
     ptoken = input("Please enter the token of your choice ({}): ".format(player))
     while not isTokenValid(ptoken, tokens):
@@ -27,6 +27,7 @@ def get_token_input(player, tokens):
     tokens.append(ptoken)
     return ptoken.upper()
 
+# Get and validate move by human player
 def get_human_spot(board, player):
     spot = input("{}, please make a move on the board (1 - 9): ".format(player.name))
     while not board.isValidMove(spot):

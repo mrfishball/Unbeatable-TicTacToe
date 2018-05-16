@@ -36,6 +36,7 @@ class Game:
         or spot == player2.token]) == 9
 
   def start_game(self):
+    print ("\n" * 100)
     self.game_menu()
     gameMode = self.set_game_mode()
     self.set_players(gameMode)
@@ -46,11 +47,10 @@ class Game:
     while not self.game_over:
       # Loop through the array to keep correct turns
       for player in self.game_order:
-
           move = player.make_a_move(self.board)
+          print ("\n" * 100)
           self.board.draw_board()
           print("\n'{} ({})' chose spot '{}'".format(player.name, player.token, move))
-
           # If a player wins, update the winner status and exist the game
           if (self.ifPlayerWin(self.board, player)):
               self.winner = player.name
@@ -83,6 +83,7 @@ class Game:
       return int(gameMode)
 
   def set_players(self, gameMode):
+      print ("\n" * 100)
       players = []
       # Play against AI
       if (gameMode == 1):
@@ -110,6 +111,7 @@ class Game:
   # Player can use any letters as tokens
   # Numbers and special unicode characters will not be allowed
   def set_token(self, gameMode, player1, player2):
+      print ("\n" * 100)
       tokens = []
 
       # Spectate a game
@@ -133,14 +135,17 @@ class Game:
 
       player1.token = p1Token
       player2.token = p2Token
-
-      print("\nThe token for '{}' is '{}'".format(player1.name, p1Token))
-      print("The token for '{}' is '{}'".format(player2.name, p2Token))
+      #
+      # print("\nThe token for '{}' is '{}'".format(player1.name, p1Token))
+      # print("The token for '{}' is '{}'".format(player2.name, p2Token))
 
   # Pick which player goes first
   # Only if versus mode is selected then players will roll dice to determine who gets to
   # choose to go first or last
   def set_turn(self, gameMode, player1, player2, game_order):
+      print ("\n" * 100)
+      print("\nThe token for '{}' is '{}'".format(player1.name, player1.token))
+      print("The token for '{}' is '{}'".format(player2.name, player2.token))
 
       # Spectate a game
       if (gameMode == 3):

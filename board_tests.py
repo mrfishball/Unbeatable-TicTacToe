@@ -1,6 +1,4 @@
 import unittest
-from unittest import mock
-from io import StringIO
 from human import *
 from board import *
 
