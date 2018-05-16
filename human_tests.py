@@ -27,9 +27,9 @@ class TestHuman(unittest.TestCase):
 
             # When a spot that has already been taken is enter, it should be treated as invalid move
             # The spot taken should have the original token still in place
-            result = self.player2.make_a_move(self.board)
-            self.assertEqual(result, 8)
-            self.assertEqual(self.board.board[result-1], self.player2.token)
+            result2 = self.player2.make_a_move(self.board)
+            self.assertEqual(result2, 8)
+            self.assertEqual(self.board.board[result2-1], self.player2.token)
             self.assertEqual(self.board.board[result-1], self.player.token)
 
 if __name__ == '__main__':

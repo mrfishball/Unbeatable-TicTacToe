@@ -83,17 +83,17 @@ class Game:
       return int(gameMode)
 
   def set_players(self, gameMode):
-
+      players = []
       # Play against AI
       if (gameMode == 1):
-          name1 = util.get_name_input()
+          name1 = util.get_name_input(players)
           player1 = Human(name1)
           player2 = Cpu("Iris (AI)")
 
       # Play against a firend
       elif (gameMode == 2):
-          name1 = util.get_name_input()
-          name2 = util.get_name_input(2)
+          name1 = util.get_name_input(players)
+          name2 = util.get_name_input(players)
           player1 = Human(name1)
           player2 = Human(name2)
 

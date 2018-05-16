@@ -4,12 +4,18 @@ import string
 
 # Check to see if the player enters an invalid nameself
 # Empty name will not be allowed
-def get_name_input(playerNum=1):
+def get_name_input(game_order):
+    if not game_order:
+        playerNum = 1
+    else:
+        playerNum = 2
     player = input("Please enter your name (Player {}): ".format(playerNum))
     while not player.strip():
         print("\nInvalid name. Please try again. \n")
         player = input("Please enter your name: ")
-    return player.strip()
+    player = player.strip()
+    game_order.append(player)
+    return player
 
 # Ask user for a token choice and validate that token
 def get_token_input(player, tokens):

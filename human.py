@@ -9,5 +9,5 @@ class Human(Player):
 
     def make_a_move(self, board):
         move = util.get_human_spot(board, self)
-        board.update_visual(move, self.token)
+        board.insert_board(move, self.token)
         return move + 1
