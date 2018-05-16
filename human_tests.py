@@ -1,26 +1,36 @@
 import unittest
+from unittest import mock
+from io import StringIO
 from human import *
+from board import *
 
 class TestHuman(unittest.TestCase):
 
     def setUp(self):
-        self.human = Human("Tom")
-        self.human2 = Human("Mary")
+        self.player = Human("Ben")
+        self.board = Board()
+        self.player.token = "X"
 
-    def test_init(self):
-        self.assertEqual(self.human.name, "Tom")
-        self.assertEqual(self.human2.name, "Mary")
-        self.assertEqual(self.human.opponent, None)
-        self.assertEqual(self.human2.opponent, None)
-        self.assertEqual(self.human.token, None)
-        self.assertEqual(self.human2.token, None)
+        self.player2 = Human("Ben")
+        self.player2.token = "O"
 
-    def test_opponent(self):
-        self.human.opponent = self.human2
-        self.human2.opponent = self.human
-        self.assertEqual(self.human.opponent, self.human2)
-        self.assertEqual(self.human2.opponent, self.human)
+    # Test that the function handle user input correctly
+    @mock.patch("sys.stdout", new_callable=StringIO)
+    def test_make_a_move(self, mock_stdout):
+        with mock.patch("builtins.input", side_effect=[" ", "0", "a", "5", "5", "8"]):
 
+            # All invalid inputs should be ignored and the fucntion should only return
+            # when a valid input is entered, then register move onto the board
+            result = self.player.make_a_move(self.board)
+            self.assertEqual(result, 5)
+            self.assertEqual(self.board.board[result-1], self.player.token)
+
+            # When a spot that has already been taken is enter, it should be treated as invalid move
+            # The spot taken should have the original token still in place
+            result = self.player2.make_a_move(self.board)
+            self.assertEqual(result, 8)
+            self.assertEqual(self.board.board[result-1], self.player2.token)
+            self.assertEqual(self.board.board[result-1], self.player.token)
 
 if __name__ == '__main__':
     unittest.main()

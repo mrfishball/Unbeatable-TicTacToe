@@ -11,10 +11,12 @@ class TestGame(unittest.TestCase):
     # Test different input types to verify function correctly handles incorrect values
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_set_game_mode(self, mock_stdout):
+        print("Testing game mode selection...")
         with mock.patch("builtins.input", side_effect=[" ", "1", "4", "2", "99", "a", "@", "3"]):
             self.assertEqual(self.game.set_game_mode(), 1)
             self.assertEqual(self.game.set_game_mode(), 2)
             self.assertEqual(self.game.set_game_mode(), 3)
+        print("Passed!")
 
     #Test function applies strip() to user input before committing to any changes
     @mock.patch("sys.stdout", new_callable=StringIO)
@@ -36,73 +38,62 @@ class TestGame(unittest.TestCase):
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_set_token(self, mock_stdout):
         with mock.patch("builtins.input", side_effect=["a", "v", "V", "b"]):
-            self.game.player1 = Human("Lee")
-            self.game.player2 = Cpu("Iris (AI)")
-            self.game.set_token(1, self.game.player1, self.game.player2)
-            self.assertNotEqual(self.game.player1.token, self.game.player2.token)
+            player1 = Human("Lee")
+            player2 = Cpu("Iris (AI)")
+            self.game.set_token(1, player1, player2)
+            self.assertNotEqual(player1.token, player2.token)
 
-            self.game.player1 = Human("John")
-            self.game.player2 = Human("Mary")
-            self.game.set_token(2, self.game.player1, self.game.player2)
-            self.assertNotEqual(self.game.player1.token, self.game.player2.token)
+            player1 = Human("John")
+            player2 = Human("Mary")
+            self.game.set_token(2, player1, player2)
+            self.assertNotEqual(player1.token, player2.token)
 
-            self.game.player1 = Cpu("Betty (AI)")
-            self.game.player2 = Cpu("Iris (AI)")
-            self.game.set_token(3, self.game.player1, self.game.player2)
-            self.assertNotEqual(self.game.player1.token, self.game.player2.token)
+            player1 = Cpu("Betty (AI)")
+            player2 = Cpu("Iris (AI)")
+            self.game.set_token(3, player1, player2)
+            self.assertNotEqual(player1.token, player2.token)
 
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_set_turn(self, mock_stdout):
         with mock.patch("builtins.input", side_effect=["3", "1", " ", "2", "a", "1",  "@", "2"]):
-            self.game.game_order = []
+            game_order = []
 
             # Test when player chooses to go first, player should be the first item in game_order
-            self.game.player1 = Human("John")
-            self.game.player2 = Cpu("Iris (AI)")
-            self.game.set_turn(1, self.game.player1, self.game.player2, self.game.game_order)
-            self.assertEqual(self.game.game_order[0], self.game.player1)
-            self.assertEqual(self.game.game_order[1], self.game.player2)
+            player1 = Human("John")
+            player2 = Cpu("Iris (AI)")
+            self.game.set_turn(1, player1, player2, game_order)
+            self.assertEqual(game_order[0], player1)
+            self.assertEqual(game_order[1], player2)
 
             # Test when player chooses to go first, player should be the last item in game_order
-            self.game.game_order = []
-            self.game.set_turn(1, self.game.player1, self.game.player2, self.game.game_order)
-            self.assertEqual(self.game.game_order[0], self.game.player2)
-            self.assertEqual(self.game.game_order[1], self.game.player1)
+            game_order = []
+            self.game.set_turn(1, player1, player2, game_order)
+            self.assertEqual(game_order[0], player2)
+            self.assertEqual(game_order[1], player1)
 
             # Test when the player who has the higher dice roll chooses to go first, that player should be the first item in game_order
-            self.game.game_order = []
-            self.game.player1 = Human("May")
-            self.game.player2 = Human("Tony")
-            self.game.set_turn(2, self.game.player1, self.game.player2, self.game.game_order)
-            if self.game.player1.dice > self.game.player2.dice:
-
-                self.assertEqual(self.game.game_order[0], self.game.player1)
-                self.assertEqual(self.game.game_order[1], self.game.player2)
+            game_order = []
+            player1 = Human("May")
+            player2 = Human("Tony")
+            self.game.set_turn(2, player1, player2, game_order)
+            if player1.dice > player2.dice:
+                self.assertEqual(game_order[0], player1)
+                self.assertEqual(game_order[1], player2)
             else:
-                self.assertEqual(self.game.game_order[0], self.game.player2)
-                self.assertEqual(self.game.game_order[1], self.game.player1)
+                self.assertEqual(game_order[0], player2)
+                self.assertEqual(game_order[1], player1)
 
             # Test when the player has has higher dice roll chooses to go last, that player should be the last item in game_order
-            self.game.game_order = []
-            self.game.set_turn(2, self.game.player1, self.game.player2, self.game.game_order)
-            if self.game.player1.dice > self.game.player2.dice:
-                self.assertEqual(self.game.game_order[1], self.game.player1)
-                self.assertEqual(self.game.game_order[0], self.game.player2)
+            game_order = []
+            self.game.set_turn(2, player1, player2, game_order)
+            if player1.dice > player2.dice:
+                self.assertEqual(game_order[1], player1)
+                self.assertEqual(game_order[0], player2)
             else:
-                self.assertEqual(self.game.game_order[1], self.game.player2)
-                self.assertEqual(self.game.game_order[0], self.game.player1)
+                self.assertEqual(game_order[1], player2)
+                self.assertEqual(game_order[0], player1)
 
-    # def test_get_opponent(self):
-    #     self.game.player1 = Human("John")
-    #     self.game.player2 = Cpu("Betty (AI)")
-    #
-    #     opponent = self.game.get_opponent(self.game.player1)
-    #     self.assertEqual(opponent, self.game.player2)
-    #
-    #     opponent = self.game.get_opponent(self.game.player2)
-    #     self.assertEqual(opponent, self.game.player1)
-
-    # Test the game to correctly detect win patterns
+    # Test that the function to correctly detect win patterns
     def test_ifPlayerWin(self):
         board = Board()
         player = Human("Tony")
@@ -124,7 +115,7 @@ class TestGame(unittest.TestCase):
                 result = self.game.ifPlayerWin(board, player)
                 self.assertTrue(result)
 
-    # Test that function detects ties correctly
+    # Test that the function detects ties correctly
     def test_tie(self):
         board = Board()
         player = Human("Tony")

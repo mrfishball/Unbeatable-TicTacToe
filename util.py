@@ -21,6 +21,13 @@ def get_token_input(player, tokens):
     tokens.append(ptoken)
     return ptoken.upper()
 
+def get_human_spot(board, player):
+    spot = input("{}, please make a move on the board (1 - 9): ".format(player.name))
+    while not board.isValidMove(spot):
+      spot = input("{}, please make a move on the board (1 - 9): ".format(player.name))
+    spot = int(spot)
+    return spot-1
+
 # Generate token for AI
 def generate_token(tokens):
     cpuToken = random.choice(string.ascii_lowercase)

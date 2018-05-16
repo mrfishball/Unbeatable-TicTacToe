@@ -47,26 +47,22 @@ class Game:
       # Loop through the array to keep correct turns
       for player in self.game_order:
 
-          player_name = player.name
-          player_token = player.token
-
           move = player.make_a_move(self.board)
           self.board.draw_board()
-          print("\n'{} ({})' chose spot '{}'".format(player_name, player_token, move))
+          print("\n'{} ({})' chose spot '{}'".format(player.name, player.token, move))
 
           # If a player wins, update the winner status and exist the game
           if (self.ifPlayerWin(self.board, player)):
-              self.winner = player_name
+              self.winner = player.name
               self.game_over = True
-              print("\n{} win!".format(player_name))
+              print("\n{} win!".format(player.name))
               break
 
           # If it's a tie, update the game_over status and exist the game
-          if (self.tie(self.board, self.player1, self.player2)):
+          if (self.tie(self.board, player, player.opponent)):
               self.game_over = True
               print("\nIt's a tie!")
               break
-    print(self.board.board)
 
   def game_menu(self):
       print("\nWelcome to Tic Tac Toe Classic!")
@@ -135,8 +131,8 @@ class Game:
               p1Token = util.get_token_input(player1.name, tokens)
               p2Token = util.generate_token(tokens)
 
-      self.player1.token = p1Token
-      self.player2.token = p2Token
+      player1.token = p1Token
+      player2.token = p2Token
 
       print("\nThe token for '{}' is '{}'".format(player1.name, p1Token))
       print("The token for '{}' is '{}'".format(player2.name, p2Token))
