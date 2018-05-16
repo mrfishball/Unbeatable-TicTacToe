@@ -2,12 +2,13 @@
 
 ## Change Log
 ```
-v1.1
+v1.5
 
-- Heavily refactored code base to make it more modular.
+- Heavily refactored the game class and split it into multiple classes to make the project more modular.
 - Improved game menu.
-- Improved UI to make moves easier.
+- Improved overall UI to make game play easier.
 - Improved system feedbacks to notify player next in line of last move and who makes the move.
+- Added tests for each module.  
 - Updated comments to make code easier to reason about.
 
 ```
@@ -19,20 +20,47 @@ v1.0
 
 ```
 
+## Installation
+
+Just Clone this repo and run ```python game.py```
+
+## Dependencies
+
+None, pure python code.
+
+## Files
+
+```
+- board.py
+- player.py
+- human.py
+- cpu.py
+- game.py
+- util.py
+
+Optional Files - (For Development)
+
+- board_tests.py
+- human_tests.py
+- cpu_tests.py
+- game_tests.py
+- util_tests.py
+
+```
+
 ## Demo
 ```
-Welcome to the game Tic Tac Toe!
+Welcome to Tic Tac Toe Classic!
 
 Select a game mode:
 
-1. Play with a super computer
+1. Play against a super computer
 2. Play with a friend
 3. Spectate a game (CPU vs CPU)
 
 Your choice is (Enter the number): 1
 
-Setting up the game...
-
+...
 
 Please enter your name: Steven
 
@@ -40,6 +68,8 @@ Select a token:
 A token is a letter (A to Z) that will be used to mark your moves on the board.
 
 Please enter the token of your choice: S
+
+...
 
 The token for 'Steven' is 'S'
 The token for 'COMP' is 'C'
@@ -57,83 +87,53 @@ Would you like to go first or last, Steven? (Enter number):
 Your choice is: 1
 
 Steven will go first.
-COMP will go last.
+Iris (AI) will go last.
 
 ...
 
 ```
-
-## Installation
-
-Just Clone this repo and run ```python game.py```
-
-## Dependencies
-
-None, pure python code.
-
 
 ## Unbeatable AI
 ```
+  1  |  2  |  3
+-----------------
+  4  |  5  |  6
+-----------------
+  7  |  8  |  9
 
-     1 | 2 | 3
-    -----------
-     4 | 5 | 6
-    -----------
-     7 | 8 | 9
+Steven, please make a move on the board (1 - 9):
 
-Steven, please make a move on the board (1 - 9): 2
 
-     1 | S | 3
-    -----------
-     4 | 5 | 6
-    -----------
-     7 | 8 | 9
+  S  |  2  |  3
+-----------------
+  4  |  5  |  6
+-----------------
+  7  |  8  |  9
 
-Player 'Steven(S)' chose spot '2'
 
-     C | S | 3
-    -----------
-     4 | 5 | 6
-    -----------
-     7 | 8 | 9
+'Steven (S)' chose spot '1'
 
-Player 'COMP(C)' chose spot '1'
-Steven, please make a move on the board (1 - 9): 5
+  S  |  2  |  3
+-----------------
+  4  |  U  |  6
+-----------------
+  7  |  8  |  9
 
-     C | S | 3
-    -----------
-     4 | S | 6
-    -----------
-     7 | 8 | 9
 
-Player 'Steven(S)' chose spot '5'
+'Iris (AI) (U)' chose spot '5'
+Steven, please make a move on the board (1 - 9):
 
-     C | S | 3
-    -----------
-     4 | S | 6
-    -----------
-     7 | C | 9
 
-Player 'COMP(C)' chose spot '8'
-Steven, please make a move on the board (1 - 9): 3
+  S  |  S  |  3
+-----------------
+  U  |  U  |  U
+-----------------
+  S  |  8  |  9
 
-      C | S | S
-     -----------
-      4 | S | 6
-     -----------
-      7 | C | 9
 
-Player 'Steven(S)' chose spot '2'
+'Iris (AI) (U)' chose spot '6'
 
-      C | S | S
-     -----------
-      4 | S | 6
-     -----------
-      C | C | 9
-
-Player 'COMP(C)' chose spot '7'
-
-...
+Iris (AI) win!
 
 ```
 
